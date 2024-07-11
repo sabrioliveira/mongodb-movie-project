@@ -1,8 +1,9 @@
 import express from 'express'
 import dbConnect from './config/dbConnect.js';
+import routes from './routes/index.js'
 
 const app = express()
-app.use(express.json())
+routes(app)
 
 const connect = await dbConnect()
 connect.on("error", (err) => {
@@ -12,22 +13,8 @@ connect.once("open", () => {
     console.log("Connection to the database successful!");
 })
 
-const movies = []
 
-function getMovieById(id) {
-    return movies.findIndex(movie => {
-        return movie.id === Number(id)
-    })
-}
 
-app.get("/", (req, res) => {
-    console.log("aaaaaaaaaaaaaaaaa");
-    res.status(200).send("xim")
-})
-
-app.get("/movies", (req, res) => {
-    res.status(200).json(movies)
-})
 
 app.get("/movies/:id", (req, res) => {
     const index = getMovieById(req.params.id)
